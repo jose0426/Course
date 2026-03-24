@@ -1,254 +1,265 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Cursos Virtual</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Futurista</title>
 
-    <link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- ICONOS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
 
-    <!-- LOGO -->
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135755.png">
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+/* BODY */
+body{
+    height:100vh;
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* CONTENEDOR */
+.container{
+    width:100%;
+    max-width:1000px;
+    height:600px;
+    perspective:1200px;
+}
+
+/* TARJETA */
+.flip-card{
+    width:100%;
+    height:100%;
+}
+
+.flip-inner{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:0.8s;
+}
+
+/* EFECTO GIRO */
+.container.flip .flip-inner{
+    transform: rotateY(180deg);
+}
+
+/* CARAS */
+.flip-front, .flip-back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    backface-visibility:hidden;
+    display:flex;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+/* FRENTE */
+.flip-front{
+    background:#0f172a;
+    color:white;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+}
+
+/* ATRÁS */
+.flip-back{
+    transform: rotateY(180deg);
+    background:white;
+}
+
+/* BOTÓN */
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* INFO BTN */
+.info-btn{
+    background:#3b82f6;
+    color:white;
+    margin-bottom:20px;
+}
+
+/* FORMULARIOS */
+.right{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.form{
+    width:80%;
+}
+
+.form h2{
+    margin-bottom:10px;
+}
+
+.form input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.btn-login{
+    width:100%;
+    background:#3b82f6;
+    color:white;
+}
+
+/* LINKS */
+.toggle{
+    margin-top:10px;
+    cursor:pointer;
+    color:#3b82f6;
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-content{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    width:300px;
+}
+
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="left-section">
 
-            <!-- LOGO -->
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" width="80" style="margin-bottom:20px;">
+<div class="container" id="container">
+    <div class="flip-card">
+        <div class="flip-inner">
 
-            <button class="info-btn" id="infoBtn" title="Información">
-                <i class="fas fa-info-circle"></i> Información
-            </button>
+            <!-- FRONT -->
+            <div class="flip-front">
 
-            <h1>¡Bienvenido!</h1>
-            <p id="leftText">Accede a tu cuenta y disfruta de todas las características que tenemos para ti. Tu experiencia de aprendizaje comienza aquí.</p>
+                <h1>¡Bienvenido!</h1>
+                <p>Accede a tu cuenta o regístrate para comenzar</p>
 
-            <div class="dot-pattern">
-                <div class="dot active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+                <button class="info-btn" onclick="openModal()">
+                    <i class="fas fa-info-circle"></i> Información
+                </button>
+
+                <button onclick="flipCard()">
+                    Ir a Login
+                </button>
+
             </div>
-        </div>
 
-        <div class="right-section">
-            <!-- FORMULARIO DE LOGIN -->
-            <div class="form-container active" id="loginForm">
-                <div class="form-header">
-                    <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
-                    <p>Ingresa tus credenciales para continuar</p>
+            <!-- BACK -->
+            <div class="flip-back">
+                <div class="right">
+
+                    <!-- LOGIN -->
+                    <div class="form" id="loginForm">
+                        <h2>Iniciar Sesión</h2>
+
+                        <input type="email" placeholder="Email">
+                        <input type="password" placeholder="Contraseña">
+
+                        <button class="btn-login">Entrar</button>
+
+                        <div class="toggle" onclick="showRegister()">
+                            Crear cuenta
+                        </div>
+                    </div>
+
+                    <!-- REGISTER -->
+                    <div class="form" id="registerForm" style="display:none;">
+                        <h2>Registro</h2>
+
+                        <input type="text" placeholder="Nombre">
+                        <input type="email" placeholder="Email">
+                        <input type="password" placeholder="Contraseña">
+
+                        <button class="btn-login">Registrarse</button>
+
+                        <div class="toggle" onclick="showLogin()">
+                            Ya tengo cuenta
+                        </div>
+                    </div>
+
                 </div>
-
-                <form onsubmit="handleLogin(event)">
-                    <div class="social-login">
-                        <button type="button" class="social-btn" title="Google">
-                            <i class="fab fa-google"></i>
-                        </button>
-                        <button type="button" class="social-btn" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
-                        <button type="button" class="social-btn" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </button>
-                    </div>
-
-                    <div class="divider">
-                        <span>o usa tu email</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
-                        <input type="email" id="loginEmail" name="email" placeholder="tu@email.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword"><i class="fas fa-lock"></i> Contraseña</label>
-                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
-                    </div>
-
-                    <div class="remember-forgot">
-                        <label>
-                            <input type="checkbox" name="remember" id="remember">
-                            Recuérdame
-                        </label>
-                        <a href="#"><i class="fas fa-key"></i> ¿Olvidaste tu contraseña?</a>
-                    </div>
-
-                    <button type="submit" class="btn-login">
-                        <i class="fas fa-arrow-right"></i> Iniciar Sesión
-                    </button>
-
-                    <div class="toggle-form">
-                        ¿No tienes cuenta? <a onclick="toggleForms()">Regístrate aquí</a>
-                    </div>
-                </form>
             </div>
 
-            <!-- FORMULARIO DE REGISTRO -->
-            <div class="form-container" id="registerForm">
-                <div class="form-header">
-                    <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
-                    <p>Únete a nuestra comunidad de aprendizaje</p>
-                </div>
-
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label for="firstName"><i class="fas fa-user"></i> Nombre</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Tu nombre" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="lastName"><i class="fas fa-user"></i> Apellido</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Tu apellido" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerEmail"><i class="fas fa-envelope"></i> Email</label>
-                        <input type="email" id="registerEmail" name="email" placeholder="tu@email.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerPhone"><i class="fas fa-phone"></i> Teléfono</label>
-                        <input type="text" id="registerPhone" name="phone" placeholder="Tu teléfono" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerPassword"><i class="fas fa-lock"></i> Contraseña</label>
-                        <input type="password" id="registerPassword" name="password" placeholder="••••••••" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmar Contraseña</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerCountry"><i class="fas fa-globe"></i> País</label>
-                        <input type="text" id="registerCountry" name="country" placeholder="Tu país" required>
-                    </div>
-
-                    <div class="remember-forgot">
-                        <label>
-                            <input type="checkbox" name="terms" id="terms" required>
-                            Acepto los términos y condiciones
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-login">
-                        <i class="fas fa-user-check"></i> Registrarse
-                    </button>
-
-                    <div class="toggle-form">
-                        ¿Ya tienes cuenta? <a onclick="toggleForms()">Inicia sesión aquí</a>
-                    </div>
-                </form>
-            </div>
         </div>
-    </div>
-
-    <!-- MODAL DE INFORMACIÓN -->
-    <div class="modal" id="infoModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeInfoModal()">
-                <i class="fas fa-arrow-left"></i> Regresar
-            </button>
-            <div class="modal-header">
-                <h2><i class="fas fa-info-circle"></i> Información</h2>
-            </div>
-<div class="cards-container">
-    <!-- Tarjeta 1: Sistema -->
-    <div class="info-card">
-        <h3>📱 Sistema</h3>
-        <p><strong>Nombre:</strong> Cursos Virtual</p>
-        <p><strong>Versión:</strong> 1.0.0</p>
-        <p><strong>Tipo:</strong> Plataforma de Aprendizaje en Línea</p>
-        <p><strong>Año:</strong> 2026</p>
-        <p><strong>Enfoque:</strong> Formación tecnológica en Latinoamérica</p>
-    </div>
-
-    <!-- Tarjeta 2: Programador -->
-    <div class="info-card">
-        <h3>👨‍💻 Acerca de Mi</h3>
-        <p><strong>Desarrollador:</strong> José Augusto</p>
-        <p><strong>Email:</strong> contacto@cursosvirtual.com</p>
-        <p><strong>Ubicación:</strong> Colombia / República Dominicana</p>
-        <p><strong>Especialidad:</strong> Desarrollo Web & Apps</p>
-        <p><strong>Objetivo:</strong> Impulsar programadores en RD</p>
-    </div>
-
-    <!-- Tarjeta 3: Características -->
-   <div class="info-card">
-    <h3>🎯 Características</h3>
-    <p>✨ Interfaz moderna y atractiva</p>
-    <p>🔐 Sistema de autenticación seguro</p>
-    <p>📚 Cursos interactivos y dinámicos</p>
-    <p>⚡ Plataforma rápida y optimizada</p>
-    <p>📱 Diseño responsive (móvil y PC)</p>
-    <p>🌐 Acceso desde cualquier lugar</p>
-    <p>👤 Gestión de usuarios</p>
-    <p>📊 Seguimiento de progreso</p>
-</div>
-    <!-- NUEVA TARJETA RD -->
-    <div class="info-card">
-        <h3>🇩🇴 Programación en RD</h3>
-        <p>💻 Alta demanda de desarrolladores</p>
-        <p>🌐 Crecimiento del sector tecnológico</p>
-        <p>📈 Oportunidades freelance e internacional</p>
-        <p>🎓 Formación en HTML, CSS, JS, PHP</p>
-        <p>🚀 Apoyo a nuevos talentos dominicanos</p>
     </div>
 </div>
-        </div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>Información</h3>
+        <p>Plataforma de cursos virtuales.</p>
+        <button onclick="closeModal()">Cerrar</button>
     </div>
+</div>
 
-    <!-- TU JS ORIGINAL -->
-    <script>
-        document.getElementById('infoBtn').addEventListener('click', function() {
-            document.getElementById('infoModal').classList.add('active');
-        });
+<script>
 
-        function closeInfoModal() {
-            document.getElementById('infoModal').classList.remove('active');
-        }
+/* GIRAR TARJETA */
+function flipCard(){
+    document.getElementById('container').classList.add('flip');
+}
 
-        window.addEventListener('click', function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target === modal) {
-                closeInfoModal();
-            }
-        });
+/* VOLVER */
+function showLogin(){
+    document.getElementById('loginForm').style.display='block';
+    document.getElementById('registerForm').style.display='none';
+}
 
-        function toggleForms() {
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const leftText = document.getElementById('leftText');
-            const container = document.querySelector('.container');
-            
-            loginForm.classList.toggle('active');
-            registerForm.classList.toggle('active');
-            container.classList.toggle('flip');
-            
-            if (registerForm.classList.contains('active')) {
-                leftText.textContent = 'Únete a nuestra comunidad de aprendizaje virtual. Acceso a miles de cursos y recursos educativos.';
-            } else {
-                leftText.textContent = 'Accede a tu cuenta y disfruta de todas las características que tenemos para ti.';
-            }
-        }
+/* REGISTRO */
+function showRegister(){
+    document.getElementById('loginForm').style.display='none';
+    document.getElementById('registerForm').style.display='block';
+}
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            alert(`Login: ${email}`);
-        }
+/* MODAL */
+function openModal(){
+    document.getElementById('modal').classList.add('active');
+}
 
-        function handleRegister(event) {
-            event.preventDefault();
-            alert('Registro exitoso');
-        }
-    </script>
+function closeModal(){
+    document.getElementById('modal').classList.remove('active');
+}
+
+</script>
+
 </body>
-</html>
+                                              </html>
